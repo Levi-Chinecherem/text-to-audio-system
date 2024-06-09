@@ -5,7 +5,7 @@ from gtts import gTTS
 import os
 from django.conf import settings
 
-def text_to_audio(request):
+def index(request):
     audio_url = None
     if request.method == 'POST':
         text = request.POST.get('text')
