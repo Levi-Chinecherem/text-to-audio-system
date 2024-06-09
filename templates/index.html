@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text to Audio System</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+      .rainbow-bg {
+          background: linear-gradient(135deg, #ff7e5f, #feb47b, #ff6e7f, #bfe9ff, #76b2fe, #f3a7f3, #ffa8e8);
+          background-size: 400% 400%;
+          animation: gradient 15s ease infinite;
+      }
+
+      @keyframes gradient {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
+      }
+    </style>
+</head>
+<body class="rainbow-bg flex items-center justify-center min-h-screen p-4">
+    <div class="bg-white bg-opacity-20 backdrop-blur-lg border border-white border-opacity-30 p-8 rounded-lg shadow-lg w-full max-w-md">
+        <h1 class="text-2xl font-bold mb-4 text-white">Text to Audio System</h1>
+        <form method="post" class="mb-4">
+            {% csrf_token %}
+            <div class="mb-4">
+                <label for="text" class="block text-white">Enter Text:</label>
+                <textarea id="text" name="text" rows="4" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm bg-white bg-opacity-60"></textarea>
+            </div>
+            <button type="submit" id="submit-btn" class="w-full bg-indigo-500 text-white py-2 rounded-md hover:bg-indigo-600 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed" disabled>Generate</button>
+        </form>
+        {% if audio_url %}
+            <div class="mt-4">
+                <audio controls class="w-full">
+                    <source src="{{ audio_url }}" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+            </div>
+        {% endif %}
+    </div>
+    <script>
+      document.getElementById('text').addEventListener('input', function() {
+          const submitButton = document.getElementById('submit-btn');
+          submitButton.disabled = !this.value.trim();
+      });
+    </script>
+</body>
+</html>
